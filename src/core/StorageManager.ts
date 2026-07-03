@@ -13,7 +13,7 @@ export class StorageManager {
       const raw = localStorage.getItem(KEYS.settings);
       if (raw) return JSON.parse(raw);
     } catch { /* ignore */ }
-    return { difficulty: 0, soundEnabled: true, vibrateEnabled: false };
+    return { soundEnabled: true, vibrateEnabled: false };
   }
 
   saveSettings(settings: Settings): void {

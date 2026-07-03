@@ -71,7 +71,7 @@ async function main() {
       { id: 'instructions', label: 'Instructions' },
       { id: 'credits', label: 'Credits' },
     );
-    menu = new Menu(items);
+    menu = new Menu(container, items, '/assets/sprites/titlesm.png');
   }
 
   // --- Game loop ---
@@ -188,9 +188,7 @@ async function main() {
     }
 
     if (state.is('menu')) {
-      const title = allAssets.get('titlesm');
-      if (menu) menu.render(renderer, title ?? undefined);
-      else initMenu();
+      renderer.fillRect(0, 0, renderer.bufferWidth, renderer.bufferHeight, '#000');
     }
 
     if (state.is('startDelay')) {
@@ -270,6 +268,7 @@ async function main() {
         if (menu) {
           const idx = menu.items.findIndex(i => i.id === 'sound');
           if (idx >= 0) menu.items[idx].label = settings.soundEnabled ? 'Sound: ON' : 'Sound: OFF';
+          menu.highlight();
         }
         break;
       case 'topscores': {
