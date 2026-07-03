@@ -206,13 +206,16 @@ export class GameCanvas {
       return null;
     }
 
+    if (input.fire) {
+      this.player.fire();
+    }
+
     const result = this.player.update(
       this.tileMap,
       input.left,
       input.right,
       input.up,
       input.down,
-      input.fire,
       66.67
     );
 

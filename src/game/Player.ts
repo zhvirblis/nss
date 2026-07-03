@@ -148,7 +148,6 @@ export class Player {
     right: boolean,
     up: boolean,
     down: boolean,
-    fire: boolean,
     _dt: number
   ): { died: boolean; collected: boolean; cx: number; cy: number; ct: number } {
     let died = false;
@@ -194,10 +193,6 @@ export class Player {
       } else {
         this.dx = 0;
       }
-    }
-
-    if (up || fire) {
-      // handled elsewhere
     }
 
     if (!down && !left && !right && this.dx !== 0) {
