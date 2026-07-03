@@ -38,7 +38,7 @@ export class Renderer {
   }
 
   fillSky(): void {
-    this.ctx.fillStyle = '#CCCCFF';
+    this.ctx.fillStyle = '#CCEEFF';
     this.ctx.fillRect(0, 0, SCREEN_W, SCREEN_H - 7);
   }
 
