@@ -51,8 +51,8 @@ async function main() {
   // --- State change handler ---
   state.onChange((from, to) => {
     if (from === 'menu' && menu) { menu.destroy(); menu = null; }
-    if (to === 'splash') splash.reset();
-    if (to === 'menu') initMenu();
+    if (to === 'splash') { splash.reset(); renderer.setBufferSize(176, 208); }
+    if (to === 'menu') { initMenu(); renderer.setBufferSize(176, 208); }
   });
 
   // --- Splash sequence ---
@@ -187,14 +187,12 @@ async function main() {
       const img = allAssets.get('bsg');
       if (img) splash.render(renderer, img);
       else { renderer.fillRect(0, 0, renderer.bufferWidth, renderer.bufferHeight, '#000066'); }
-      return;
     }
 
     if (state.is('menu')) {
       const title = allAssets.get('titlesm');
       if (menu) menu.render(renderer, title ?? undefined);
       else initMenu();
-      return;
     }
 
     if (state.is('startDelay')) {
