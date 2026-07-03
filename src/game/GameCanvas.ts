@@ -353,19 +353,17 @@ export class GameCanvas {
     this.tileRenderer.render(ctx, this.tileMap.tiles, this.camera.xOff, this.camera.yOff);
 
     // Player
-    if (!this.player.dead) {
-      const sx = this.player.angleOff * this.player.width;
-      const sy = (2 - this.player.currentMove) * (this.player.height + 8);
-      this.playerSheet.draw(ctx, sx, sy, this.player.width, this.player.height + 8,
-        this.camera.xOff + this.player.x,
-        this.camera.yOff + this.player.y - this.player.height);
+    const sx = this.player.angleOff * this.player.width;
+    const sy = (2 - this.player.currentMove) * (this.player.height + 8);
+    this.playerSheet.draw(ctx, sx, sy, this.player.width, this.player.height + 8,
+      this.camera.xOff + this.player.x,
+      this.camera.yOff + this.player.y - this.player.height);
 
-      if (this.player.invincible) {
-        this.invincibilitySheet.draw(ctx,
-          this.player.invincibilityFrame * 22, 0, 22, 22,
-          this.camera.xOff + this.player.x - 3,
-          this.camera.yOff + this.player.y - this.player.height - 3);
-      }
+    if (this.player.invincible && !this.player.dead) {
+      this.invincibilitySheet.draw(ctx,
+        this.player.invincibilityFrame * 22, 0, 22, 22,
+        this.camera.xOff + this.player.x - 3,
+        this.camera.yOff + this.player.y - this.player.height - 3);
     }
 
     // Monsters
