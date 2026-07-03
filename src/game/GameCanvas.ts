@@ -232,6 +232,13 @@ export class GameCanvas {
       const ct = result.ct;
       const col = result.cx;
       const row = result.cy;
+
+      if (ct >= 93 && ct <= 95) {
+        this.won = true;
+        this.totalTime += this.timer;
+        return 'won';
+      }
+
       this.tileMap.setTile(col, row, 0);
 
       if (ct === 90) {
@@ -247,10 +254,6 @@ export class GameCanvas {
         this.player.invincible = true;
         this.player.invincibilityCounter = 0;
         this.player.invincibilityScoreAdj = 0;
-      } else if (ct >= 93 && ct <= 95) {
-        this.won = true;
-        this.totalTime += this.timer;
-        return 'won';
       } else if (ct === 99) {
         this.player.coins++;
         this.player.totalCoins++;
