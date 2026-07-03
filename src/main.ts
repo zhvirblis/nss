@@ -66,7 +66,6 @@ async function main() {
     const save = storage.loadSave();
     if (save) items.push({ id: 'continue', label: 'Continue' });
     items.push(
-      { id: 'difficulty', label: settings.difficulty === 0 ? 'Difficulty: Easy' : 'Difficulty: Hard' },
       { id: 'sound', label: settings.soundEnabled ? 'Sound: ON' : 'Sound: OFF' },
       { id: 'topscores', label: 'Top Score' },
       { id: 'instructions', label: 'Instructions' },
@@ -264,14 +263,6 @@ async function main() {
         }
         break;
       }
-      case 'difficulty':
-        settings.difficulty = settings.difficulty === 0 ? 1 : 0;
-        storage.saveSettings(settings);
-        if (menu) {
-          const idx = menu.items.findIndex(i => i.id === 'difficulty');
-          if (idx >= 0) menu.items[idx].label = settings.difficulty === 0 ? 'Difficulty: Easy' : 'Difficulty: Hard';
-        }
-        break;
       case 'sound':
         settings.soundEnabled = !settings.soundEnabled;
         audio.enabled = settings.soundEnabled;

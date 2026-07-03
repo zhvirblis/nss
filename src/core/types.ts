@@ -25,7 +25,6 @@ export interface SaveData {
 }
 
 export interface Settings {
-  difficulty: number;
   soundEnabled: boolean;
   vibrateEnabled: boolean;
 }
