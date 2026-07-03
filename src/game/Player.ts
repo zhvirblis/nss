@@ -1,5 +1,6 @@
 import { TileMap } from './TileMap';
 import { Physics } from './Physics';
+import { SCREEN_W, GAME_H } from '../core/types';
 
 export interface ScoreAnim {
   index: number;
@@ -276,10 +277,10 @@ export class Player {
         s[0] += s[4];
         s[2] += s[5];
         if (
-          s[0] >> 8 > this.x + 400 ||
-          s[0] >> 8 < this.x - 400 ||
-          s[2] >> 8 > this.y + 400 ||
-          s[2] >> 8 < this.y - 400
+          s[0] >> 8 > this.x + SCREEN_W ||
+          s[0] >> 8 < this.x - SCREEN_W ||
+          s[2] >> 8 > this.y + GAME_H ||
+          s[2] >> 8 < this.y - GAME_H
         ) {
           this.shots[i] = null;
         }

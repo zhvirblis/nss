@@ -272,7 +272,8 @@ export class GameCanvas {
       monster.move(this.tileMap);
 
       if (monster.active) {
-        for (const shot of this.player.shots) {
+        for (let i = 0; i < this.player.shots.length; i++) {
+          const shot = this.player.shots[i];
           if (shot && monster.shotCollide(
             shot[0] >> 8, shot[1] >> 8,
             shot[2] >> 8, shot[3] >> 8
@@ -280,6 +281,7 @@ export class GameCanvas {
             this.audio.play(5);
             this.player.score += 100;
             this.player.scoreAnims.push({ index: 0, x: monster.x + monster.halfW, y: monster.y - 10, counter: 0 });
+            this.player.shots[i] = null;
           }
         }
 
@@ -392,8 +394,8 @@ export class GameCanvas {
     for (const shot of this.player.shots) {
       if (shot) {
         this.shotSheet.draw(ctx, 0, 0, 4, 4,
-          this.camera.xOff + (shot[0] >> 8),
-          this.camera.yOff + (shot[2] >> 8));
+          this.camera.xOff + (shot[0] >> 8) - 2,
+          this.camera.yOff + (shot[2] >> 8) - 2);
       }
     }
 
