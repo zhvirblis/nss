@@ -61,6 +61,6 @@ export class FlyingMonster extends Monster {
       this.currentMove * FlyingMonster.FH,
       FlyingMonster.FW, FlyingMonster.FH,
       xOff + this.x + off[0],
-      yOff + this.y + off[1]);
+      yOff + this.y - this.height + off[1]);
   }
 }
