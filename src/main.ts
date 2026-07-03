@@ -140,11 +140,12 @@ async function main() {
         if (transitionTimer >= 4000) {
           game.nextLevel();
           if (game.finishedGame) {
-            state.set('gameComplete');
+            transitionTarget = 'gameComplete';
+            transitionTimer = 0;
           } else {
             state.set('startDelay');
+            transitionTarget = null;
           }
-          transitionTarget = null;
         }
       } else if (transitionTarget === 'gameOver') {
         if (transitionTimer >= 4000) {
