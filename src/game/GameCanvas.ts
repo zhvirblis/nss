@@ -396,7 +396,7 @@ export class GameCanvas {
       ctx.clip();
       this.scoreSheet.draw(ctx, 0, anim.index * 7, 22, 7,
         this.camera.xOff + anim.x - 11,
-        this.camera.yOff + anim.y - anim.counter - anim.index * 7);
+        this.camera.yOff + anim.y - anim.counter);
       ctx.restore();
     }
 
