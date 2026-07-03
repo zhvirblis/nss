@@ -1,4 +1,3 @@
-import { SCREEN_W, SCREEN_H } from '../core/types';
 import { Renderer } from '../rendering/Renderer';
 
 export class SplashScreen {
@@ -15,7 +14,8 @@ export class SplashScreen {
 
   render(renderer: Renderer, img: HTMLImageElement): void {
     renderer.clear();
-    renderer.ctx.drawImage(img, 0, 0, SCREEN_W, SCREEN_H);
+    const ox = Math.floor((renderer.bufferWidth - 176) / 2);
+    renderer.ctx.drawImage(img, ox, 0, 176, renderer.bufferHeight);
     renderer.present();
   }
 

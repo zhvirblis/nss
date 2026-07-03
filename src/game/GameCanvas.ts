@@ -1,4 +1,4 @@
-import { SCREEN_W, GAME_H, HALF_GAME_W } from '../core/types';
+import { GAME_H } from '../core/types';
 import type { InputState } from '../core/types';
 import { TileMap } from './TileMap';
 import { Player } from './Player';
@@ -25,6 +25,7 @@ export class GameCanvas {
   hudRenderer!: HUDRenderer;
   screenRenderer: ScreenRenderer;
   audio: AudioManager;
+  viewW: number;
 
   currentLevel = 0;
   totalTime = 0;
@@ -54,8 +55,10 @@ export class GameCanvas {
     this.renderer = renderer;
     this.audio = audio;
     this.imgAssets = assets;
+    this.viewW = window.innerWidth < window.innerHeight ? 176 : 352;
+    renderer.setBufferSize(this.viewW, 208);
     this.player = new Player();
-    this.camera = new Camera();
+    this.camera = new Camera(this.viewW);
     this.screenRenderer = new ScreenRenderer(renderer);
     this.initSprites(assets);
   }
@@ -90,6 +93,10 @@ export class GameCanvas {
   }
 
   loadLevel(): void {
+    this.viewW = window.innerWidth < window.innerHeight ? 176 : 352;
+    this.renderer.setBufferSize(this.viewW, 208);
+    this.camera.setViewWidth(this.viewW);
+
     const data = getLevelData(this.currentLevel);
     this.tileMap = new TileMap(data.tiles.map(row => [...row]));
     this.camera.setBounds(this.tileMap.pixelsWide(), this.tileMap.pixelsTall());
@@ -271,7 +278,7 @@ export class GameCanvas {
     // Handle shots vs monsters
     for (const monster of this.monsters) {
       if (!monster) continue;
-      monster.checkActive(this.camera.xOff, this.camera.yOff, SCREEN_W, GAME_H);
+      monster.checkActive(this.camera.xOff, this.camera.yOff, this.viewW, GAME_H);
       monster.move(this.tileMap);
 
       if (monster.active) {
@@ -349,13 +356,14 @@ export class GameCanvas {
       this.screenRenderer.drawEndScreen();
       const endImg = this.imgAssets.get('EndScreen');
       if (endImg) {
-        ctx.drawImage(endImg, HALF_GAME_W - 88, 0, 176, 208);
+        const ox = Math.floor((this.renderer.bufferWidth - 176) / 2);
+        ctx.drawImage(endImg, ox, 0, 176, 208);
       }
       return;
     }
 
     this.renderer.fillSky();
-    this.tileRenderer.render(ctx, this.tileMap.tiles, this.camera.xOff, this.camera.yOff);
+    this.tileRenderer.render(ctx, this.tileMap.tiles, this.camera.xOff, this.camera.yOff, this.viewW);
 
     // Player
     const sx = this.player.angleOff * this.player.width;

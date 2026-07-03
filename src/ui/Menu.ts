@@ -1,4 +1,3 @@
-import { SCREEN_W, SCREEN_H, HALF_GAME_W } from '../core/types';
 import { Renderer } from '../rendering/Renderer';
 
 export interface MenuAction {
@@ -16,15 +15,18 @@ export class Menu {
 
   render(renderer: Renderer, titleImg?: HTMLImageElement): void {
     const ctx = renderer.ctx;
+    const bw = renderer.bufferWidth;
+    const bh = renderer.bufferHeight;
 
     if (titleImg) {
-      renderer.fillRect(0, 0, SCREEN_W, SCREEN_H, '#000000');
-      ctx.drawImage(titleImg, 0, 0, SCREEN_W, SCREEN_H);
+      renderer.fillRect(0, 0, bw, bh, '#000000');
+      const ox = Math.floor((bw - 176) / 2);
+      ctx.drawImage(titleImg, ox, 0, 176, bh);
     } else {
-      renderer.fillRect(0, 0, SCREEN_W, SCREEN_H, '#000066');
+      renderer.fillRect(0, 0, bw, bh, '#000066');
     }
 
-    const startY = titleImg ? SCREEN_H - this.items.length * 14 - 10 : 40;
+    const startY = titleImg ? bh - this.items.length * 14 - 10 : 40;
     ctx.font = '8px monospace';
     ctx.textAlign = 'center';
 
@@ -34,10 +36,10 @@ export class Menu {
 
       if (i === this.selected) {
         ctx.fillStyle = '#FFFF00';
-        ctx.fillText('> ' + label + ' <', HALF_GAME_W, y);
+        ctx.fillText('> ' + label + ' <', bw / 2, y);
       } else {
         ctx.fillStyle = '#FFFFFF';
-        ctx.fillText(label, HALF_GAME_W, y);
+        ctx.fillText(label, bw / 2, y);
       }
     }
   }

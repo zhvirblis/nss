@@ -1,10 +1,12 @@
 import { SCREEN_W, SCREEN_H } from '../core/types';
 
 export class Renderer {
-  readonly offscreen: HTMLCanvasElement;
-  readonly ctx: CanvasRenderingContext2D;
+  offscreen: HTMLCanvasElement;
+  ctx: CanvasRenderingContext2D;
   readonly display: HTMLCanvasElement;
   private dCtx: CanvasRenderingContext2D;
+  bufferWidth = SCREEN_W;
+  bufferHeight = SCREEN_H;
 
   constructor(display: HTMLCanvasElement) {
     this.display = display;
@@ -15,31 +17,49 @@ export class Renderer {
     this.ctx = this.offscreen.getContext('2d')!;
   }
 
+  setBufferSize(w: number, h: number): void {
+    if (w === this.bufferWidth && h === this.bufferHeight) return;
+    this.bufferWidth = w;
+    this.bufferHeight = h;
+    this.offscreen.width = w;
+    this.offscreen.height = h;
+    this.ctx = this.offscreen.getContext('2d')!;
+  }
+
   resize(): void {
-    const maxW = window.innerWidth;
-    const maxH = window.innerHeight;
-    const scale = Math.min(maxW / SCREEN_W, maxH / SCREEN_H);
-    const w = Math.floor(SCREEN_W * scale);
-    const h = Math.floor(SCREEN_H * scale);
-    this.display.width = w;
-    this.display.height = h;
-    this.display.style.width = `${w}px`;
-    this.display.style.height = `${h}px`;
+    this.display.width = window.innerWidth;
+    this.display.height = window.innerHeight;
+    this.display.style.width = `${window.innerWidth}px`;
+    this.display.style.height = `${window.innerHeight}px`;
     this.dCtx.imageSmoothingEnabled = false;
   }
 
   clear(): void {
-    this.ctx.clearRect(0, 0, SCREEN_W, SCREEN_H);
+    this.ctx.clearRect(0, 0, this.bufferWidth, this.bufferHeight);
   }
 
   present(): void {
+    this.dCtx.fillStyle = '#000';
+    this.dCtx.fillRect(0, 0, this.display.width, this.display.height);
     this.dCtx.imageSmoothingEnabled = false;
-    this.dCtx.drawImage(this.offscreen, 0, 0, this.display.width, this.display.height);
+    const scale = this.display.width / this.bufferWidth;
+    const gameH = Math.round(this.bufferHeight * scale);
+
+    if (gameH <= this.display.height) {
+      const oy = Math.floor((this.display.height - gameH) / 2);
+      this.dCtx.drawImage(this.offscreen, 0, 0, this.bufferWidth, this.bufferHeight,
+        0, oy, this.display.width, gameH);
+    } else {
+      const srcH = Math.round(this.display.height / scale);
+      const srcY = Math.floor((this.bufferHeight - srcH) / 2);
+      this.dCtx.drawImage(this.offscreen, 0, srcY, this.bufferWidth, srcH,
+        0, 0, this.display.width, this.display.height);
+    }
   }
 
   fillSky(): void {
     this.ctx.fillStyle = '#CCEEFF';
-    this.ctx.fillRect(0, 0, SCREEN_W, SCREEN_H - 7);
+    this.ctx.fillRect(0, 0, this.bufferWidth, this.bufferHeight - 7);
   }
 
   fillRect(x: number, y: number, w: number, h: number, color: string): void {

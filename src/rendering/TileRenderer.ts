@@ -1,4 +1,4 @@
-import { TILE_SIZE, SCREEN_W, SCREEN_H, STATUS_H } from '../core/types';
+import { TILE_SIZE, SCREEN_H, STATUS_H } from '../core/types';
 import { SpriteSheet } from './SpriteSheet';
 
 export class TileRenderer {
@@ -8,8 +8,8 @@ export class TileRenderer {
     this.sheet = sheet;
   }
 
-  render(ctx: CanvasRenderingContext2D, tiles: number[][], xOff: number, yOff: number): void {
-    const cols = Math.floor(SCREEN_W / TILE_SIZE) + 2;
+  render(ctx: CanvasRenderingContext2D, tiles: number[][], xOff: number, yOff: number, viewW: number): void {
+    const cols = Math.floor(viewW / TILE_SIZE) + 2;
     const rows = Math.floor((SCREEN_H - STATUS_H) / TILE_SIZE) + 2;
     const startCol = Math.max(0, Math.floor(-xOff / TILE_SIZE));
     const startRow = Math.max(0, Math.floor(-yOff / TILE_SIZE));

@@ -3,7 +3,7 @@ import { StateManager } from './core/StateManager';
 import { InputManager } from './core/InputManager';
 import { AssetManager } from './core/AssetManager';
 import { StorageManager } from './core/StorageManager';
-import { SCREEN_W, SCREEN_H, TICK_MS } from './core/types';
+import { TICK_MS } from './core/types';
 import type { GameState } from './core/types';
 import { Renderer } from './rendering/Renderer';
 import { GameCanvas } from './game/GameCanvas';
@@ -186,7 +186,7 @@ async function main() {
     if (state.is('splash')) {
       const img = allAssets.get('bsg');
       if (img) splash.render(renderer, img);
-      else { renderer.fillRect(0, 0, SCREEN_W, SCREEN_H, '#000066'); }
+      else { renderer.fillRect(0, 0, renderer.bufferWidth, renderer.bufferHeight, '#000066'); }
       return;
     }
 
@@ -207,11 +207,11 @@ async function main() {
       game.render();
       if (state.is('paused')) {
         renderer.ctx.fillStyle = 'rgba(0,0,0,0.5)';
-        renderer.ctx.fillRect(0, 0, SCREEN_W, SCREEN_H);
+        renderer.ctx.fillRect(0, 0, renderer.bufferWidth, renderer.bufferHeight);
         renderer.ctx.fillStyle = '#FFFFFF';
         renderer.ctx.font = '8px monospace';
         renderer.ctx.textAlign = 'center';
-        renderer.ctx.fillText('PAUSED', SCREEN_W / 2, SCREEN_H / 2);
+        renderer.ctx.fillText('PAUSED', renderer.bufferWidth / 2, renderer.bufferHeight / 2);
       }
     }
 
@@ -220,33 +220,33 @@ async function main() {
       if (transitionTarget === 'levelClear') {
         if (transitionTimer > 1000) {
           renderer.ctx.fillStyle = 'rgba(0,0,0,0.5)';
-          renderer.ctx.fillRect(0, 0, SCREEN_W, SCREEN_H);
+          renderer.ctx.fillRect(0, 0, renderer.bufferWidth, renderer.bufferHeight);
           renderer.ctx.fillStyle = '#FFFFFF';
           renderer.ctx.font = '8px monospace';
           renderer.ctx.textAlign = 'center';
-          renderer.ctx.fillText('LEVEL CLEAR!', SCREEN_W / 2, SCREEN_H / 2 - 10);
-          renderer.ctx.fillText(`Score: ${game.player.score}`, SCREEN_W / 2, SCREEN_H / 2);
-          renderer.ctx.fillText(`Time: ${formatTime(game.totalTime)}`, SCREEN_W / 2, SCREEN_H / 2 + 10);
+          renderer.ctx.fillText('LEVEL CLEAR!', renderer.bufferWidth / 2, renderer.bufferHeight / 2 - 10);
+          renderer.ctx.fillText(`Score: ${game.player.score}`, renderer.bufferWidth / 2, renderer.bufferHeight / 2);
+          renderer.ctx.fillText(`Time: ${formatTime(game.totalTime)}`, renderer.bufferWidth / 2, renderer.bufferHeight / 2 + 10);
         }
       }
       if (transitionTarget === 'gameOver') {
         renderer.ctx.fillStyle = 'rgba(0,0,0,0.7)';
-        renderer.ctx.fillRect(0, 0, SCREEN_W, SCREEN_H);
+        renderer.ctx.fillRect(0, 0, renderer.bufferWidth, renderer.bufferHeight);
         renderer.ctx.fillStyle = '#FFFFFF';
         renderer.ctx.font = '8px monospace';
         renderer.ctx.textAlign = 'center';
-        renderer.ctx.fillText('GAME OVER', SCREEN_W / 2, SCREEN_H / 2);
-        renderer.ctx.fillText(`Final Score: ${game.player.score}`, SCREEN_W / 2, SCREEN_H / 2 + 10);
+        renderer.ctx.fillText('GAME OVER', renderer.bufferWidth / 2, renderer.bufferHeight / 2);
+        renderer.ctx.fillText(`Final Score: ${game.player.score}`, renderer.bufferWidth / 2, renderer.bufferHeight / 2 + 10);
       }
       if (transitionTarget === 'gameComplete') {
         game.render();
         renderer.ctx.fillStyle = 'rgba(0,0,0,0.5)';
-        renderer.ctx.fillRect(0, 0, SCREEN_W, SCREEN_H);
+        renderer.ctx.fillRect(0, 0, renderer.bufferWidth, renderer.bufferHeight);
         renderer.ctx.fillStyle = '#FFFFFF';
         renderer.ctx.font = '8px monospace';
         renderer.ctx.textAlign = 'center';
-        renderer.ctx.fillText('GAME COMPLETE!', SCREEN_W / 2, SCREEN_H / 2 - 10);
-        renderer.ctx.fillText(`Final Score: ${game.player.score}`, SCREEN_W / 2, SCREEN_H / 2);
+        renderer.ctx.fillText('GAME COMPLETE!', renderer.bufferWidth / 2, renderer.bufferHeight / 2 - 10);
+        renderer.ctx.fillText(`Final Score: ${game.player.score}`, renderer.bufferWidth / 2, renderer.bufferHeight / 2);
       }
     }
 
@@ -300,13 +300,13 @@ async function main() {
         }, TICK_MS);
         loop.onRender = (_a) => {
           renderer.clear();
-          renderer.fillRect(0, 0, SCREEN_W, SCREEN_H, '#000066');
+          renderer.fillRect(0, 0, renderer.bufferWidth, renderer.bufferHeight, '#000066');
           renderer.ctx.fillStyle = '#FFFFFF';
           renderer.ctx.font = '8px monospace';
           renderer.ctx.textAlign = 'center';
           const lines = msg.split('\n');
           lines.forEach((line, i) => {
-            renderer.ctx.fillText(line, SCREEN_W / 2, SCREEN_H / 2 - 10 + i * 12);
+            renderer.ctx.fillText(line, renderer.bufferWidth / 2, renderer.bufferHeight / 2 - 10 + i * 12);
           });
           renderer.present();
         };
@@ -325,13 +325,13 @@ async function main() {
         };
         loop.onRender = (_a) => {
           renderer.clear();
-          renderer.fillRect(0, 0, SCREEN_W, SCREEN_H, '#000066');
+          renderer.fillRect(0, 0, renderer.bufferWidth, renderer.bufferHeight, '#000066');
           renderer.ctx.fillStyle = '#FFFFFF';
           renderer.ctx.font = '7px monospace';
           renderer.ctx.textAlign = 'center';
           const lines = instrText.split('\n');
           lines.forEach((line, i) => {
-            renderer.ctx.fillText(line, SCREEN_W / 2, 15 + i * 12);
+            renderer.ctx.fillText(line, renderer.bufferWidth / 2, 15 + i * 12);
           });
           renderer.present();
         };
@@ -351,13 +351,13 @@ async function main() {
         };
         loop.onRender = (_a) => {
           renderer.clear();
-          renderer.fillRect(0, 0, SCREEN_W, SCREEN_H, '#000066');
+          renderer.fillRect(0, 0, renderer.bufferWidth, renderer.bufferHeight, '#000066');
           renderer.ctx.fillStyle = '#FFFFFF';
           renderer.ctx.font = '7px monospace';
           renderer.ctx.textAlign = 'center';
           const lines = creditText.split('\n');
           lines.forEach((line, i) => {
-            renderer.ctx.fillText(line, SCREEN_W / 2, 20 + i * 14);
+            renderer.ctx.fillText(line, renderer.bufferWidth / 2, 20 + i * 14);
           });
           renderer.present();
         };

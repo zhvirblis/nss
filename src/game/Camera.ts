@@ -1,4 +1,4 @@
-import { SCREEN_W, GAME_H } from '../core/types';
+import { GAME_H } from '../core/types';
 
 export class Camera {
   xOff = 0;
@@ -9,25 +9,34 @@ export class Camera {
 
   private backW = 0;
   private backH = 0;
+  private viewW: number;
+
+  constructor(viewW: number) {
+    this.viewW = viewW;
+  }
 
   setBounds(w: number, h: number): void {
     this.backW = w;
     this.backH = h;
   }
 
+  setViewWidth(w: number): void {
+    this.viewW = w;
+  }
+
   update(px: number, py: number, _pDX: number, pDY: number, pHalfW: number, pHalfH: number, pCurrentMove: number, pAngle: number, down: boolean): void {
-    const halfScreenW = Math.floor(SCREEN_W / 2);
+    const halfScreenW = Math.floor(this.viewW / 2);
     const halfScreenH = Math.floor(GAME_H / 2);
 
     if (
       (px + pHalfW > halfScreenW + this.xOffAdjust - this.xOffCounter &&
-        this.backW + this.xOff > SCREEN_W) ||
+        this.backW + this.xOff > this.viewW) ||
       (px + pHalfW < halfScreenW + this.xOffAdjust - this.xOffCounter - this.xOff &&
         this.xOff < 0)
     ) {
       this.xOff = halfScreenW + this.xOffAdjust - this.xOffCounter - px + pHalfW;
-      if (this.backW + this.xOff < SCREEN_W) {
-        this.xOff = -(this.backW - SCREEN_W);
+      if (this.backW + this.xOff < this.viewW) {
+        this.xOff = -(this.backW - this.viewW);
       } else if (this.xOff > 0) {
         this.xOff = 0;
       }
