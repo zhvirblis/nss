@@ -40,7 +40,7 @@ export class Physics {
     _pOrigXPos: number,
     _pOrigYPos: number,
     _pMaxDX: number,
-    _pLives: number
+    invincible: boolean
   ): CollisionResult {
     let dx = pDX;
     let dy = pDY;
@@ -128,10 +128,14 @@ export class Physics {
               } else if (tileMap.isCollectible(leftTileX, leftTileY2)) {
                 doCollect(leftTileX, leftTileY2, t2);
               } else if (
+                !invincible &&
                 tileMap.isLeftSpike(leftTileX, leftTileY1) &&
                 tileMap.isLeftSpike(leftTileX, leftTileY2)
               ) {
                 d = true;
+                dy = -2048;
+                jmp = true;
+                fall = false;
               } else if (lr) {
                 if (dx < 0) {
                   dy = -(dx * this.getSin(angle)) >> 8;
@@ -199,10 +203,14 @@ export class Physics {
               } else if (tileMap.isCollectible(rightTileX, rightTileY2)) {
                 doCollect(rightTileX, rightTileY2, t2);
               } else if (
+                !invincible &&
                 tileMap.isRightSpike(rightTileX, rightTileY1) &&
                 tileMap.isRightSpike(rightTileX, rightTileY2)
               ) {
                 d = true;
+                dy = -2048;
+                jmp = true;
+                fall = false;
               } else if (rr) {
                 if (dx > 0) {
                   dy = -(dx * this.getSin(angle)) >> 8;
@@ -245,10 +253,14 @@ export class Physics {
             } else if (tileMap.isCollectible(upTileX2, upTileY)) {
               doCollect(upTileX2, upTileY, t2);
             } else if (
+              !invincible &&
               tileMap.isTopSpike(upTileX1, upTileY) &&
               tileMap.isTopSpike(upTileX2, upTileY)
             ) {
               d = true;
+              dy = -2048;
+              jmp = true;
+              fall = false;
             } else if (jmp) {
               pDYLeft = 0;
               y = ((upTileY + 1) << 4) + pHeight;
@@ -318,10 +330,14 @@ export class Physics {
               } else if (tileMap.isCollectible(downTileX2, downTileY)) {
                 doCollect(downTileX2, downTileY, t2);
               } else if (
+                !invincible &&
                 tileMap.isBottomSpike(downTileX1, downTileY) &&
                 tileMap.isBottomSpike(downTileX2, downTileY)
               ) {
                 d = true;
+                dy = -2048;
+                jmp = true;
+                fall = false;
               } else if (fall && (y % 16) <= 2) {
                 pDYLeft = 0;
                 y = downTileY << 4;

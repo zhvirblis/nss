@@ -219,7 +219,7 @@ export class Player {
         this.angle, this.angleOff,
         tileMap,
         this.origX, this.origY,
-        this.maxDX, this.lives
+        this.maxDX, this.invincible
       );
 
       this.x = result.pXPos;
@@ -228,11 +228,15 @@ export class Player {
       this.dy = result.pDY;
       this.jumping = result.jumping;
       this.falling = result.falling;
-      this.dead = result.dead;
       this.onLeftRamp = result.onLeftRamp;
       this.onRightRamp = result.onRightRamp;
       this.angle = result.pAngle;
       this.angleOff = result.pAngleOffSet;
+
+      if (result.dead && !this.dead) {
+        this.die();
+      }
+      this.dead = result.dead;
 
       if (result.collectTile > 0) {
         collected = true;
