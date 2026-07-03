@@ -40,10 +40,10 @@ export abstract class Monster {
     this.y = tileY * 16;
     this.origY = tileY * 16;
     this.levelHeight = levelHeight;
-    this.dx = dx;
-    this.origDX = dx;
-    this.dy = dy;
-    this.origDY = dy;
+    this.dx = dx >= 128 ? dx - 256 : dx;
+    this.origDX = this.dx;
+    this.dy = dy >= 128 ? dy - 256 : dy;
+    this.origDY = this.dy;
   }
 
   reset(): void {
