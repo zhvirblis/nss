@@ -22,20 +22,22 @@ export class Menu {
       renderer.fillRect(0, 0, bw, bh, '#000000');
       const ox = Math.floor((bw - 176) / 2);
       ctx.drawImage(titleImg, ox, 0, 176, bh);
+      ctx.fillStyle = "#000000AA";
+      ctx.fillRect(0, 0, bw, bh);
     } else {
       renderer.fillRect(0, 0, bw, bh, '#000066');
     }
 
     const startY = titleImg ? bh - this.items.length * 14 - 10 : 40;
-    ctx.font = '8px monospace';
+    ctx.font = '15px monospace';
     ctx.textAlign = 'center';
 
     for (let i = 0; i < this.items.length; i++) {
-      const y = startY + i * 14;
+      const y = startY + i * 15;
       const label = this.items[i].label;
 
       if (i === this.selected) {
-        ctx.fillStyle = '#FFFF00';
+        ctx.fillStyle = '#5375FF';
         ctx.fillText('> ' + label + ' <', bw / 2, y);
       } else {
         ctx.fillStyle = '#FFFFFF';

@@ -71,7 +71,6 @@ async function main() {
       { id: 'topscores', label: 'Top Score' },
       { id: 'instructions', label: 'Instructions' },
       { id: 'credits', label: 'Credits' },
-      { id: 'quit', label: 'Quit' },
     );
     menu = new Menu(items);
   }
