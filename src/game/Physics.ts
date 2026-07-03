@@ -354,10 +354,11 @@ export class Physics {
         if (rr) {
           const rtx = (x + pWidth) >> 4;
           const rty2 = (y - 1) >> 4;
-          const dtx2 = y >> 4;
+          const dtx2 = (x + pWidth - 1) >> 4;
+          const dty = y >> 4;
           if (
             !tileMap.isRightRamp(rtx, rty2) &&
-            !tileMap.isRightRamp(dtx2, dtx2)
+            !tileMap.isRightRamp(dtx2, dty)
           ) {
             if (dx > 0) {
               if (angle === 90) x -= 2;
@@ -381,10 +382,11 @@ export class Physics {
         if (lr) {
           const ltx = x >> 4;
           const lty2 = (y - 1) >> 4;
-          const dtx1 = y >> 4;
+          const dtx1 = (x + 1) >> 4;
+          const dty = y >> 4;
           if (
             !tileMap.isLeftRamp(ltx, lty2) &&
-            !tileMap.isLeftRamp(dtx1, ltx)
+            !tileMap.isLeftRamp(dtx1, dty)
           ) {
             if (dx < 0) {
               if (angle === 270) x += 2;
