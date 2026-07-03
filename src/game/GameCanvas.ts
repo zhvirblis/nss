@@ -348,7 +348,7 @@ export class GameCanvas {
     // Player
     if (!this.player.dead) {
       const sx = this.player.angleOff * this.player.width;
-      const sy = this.player.currentMove * (this.player.height + 8);
+      const sy = (2 - this.player.currentMove) * (this.player.height + 8);
       this.playerSheet.draw(ctx, sx, sy, this.player.width, this.player.height + 8,
         this.camera.xOff + this.player.x,
         this.camera.yOff + this.player.y - this.player.height);
