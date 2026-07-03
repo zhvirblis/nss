@@ -71,7 +71,7 @@ async function main() {
       { id: 'instructions', label: 'Instructions' },
       { id: 'credits', label: 'Credits' },
     );
-    menu = new Menu(container, items, '/assets/sprites/titlesm.png');
+    menu = new Menu(container, items, 'assets/sprites/titlesm.png');
   }
 
   // --- Game loop ---

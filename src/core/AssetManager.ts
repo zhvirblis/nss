@@ -13,7 +13,7 @@ export class AssetManager {
       'Scores', 'Status', 'bsg', 'titlesm',
     ];
     await Promise.all(
-      spriteNames.map(name => this.loadImage(name, `/assets/sprites/${name}.png`))
+      spriteNames.map(name => this.loadImage(name, `assets/sprites/${name}.png`))
     );
     this.loaded = true;
   }
