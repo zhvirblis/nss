@@ -6,6 +6,7 @@ export class JumpingMonster extends Monster {
   private jumpCounter = 0;
   private jumpFrequency: number;
   private sheet: SpriteSheet;
+  private static readonly FH = 20;
 
   constructor(
     img: HTMLImageElement,
@@ -54,16 +55,7 @@ export class JumpingMonster extends Monster {
   render(ctx: CanvasRenderingContext2D, xOff: number, yOff: number): void {
     if (!this.active && !this.dying) return;
     const sx = this.currentFrame * this.width;
-    let sy = 0;
-    switch (this.currentMove) {
-      case this.M_UP: sy = 0; break;
-      case this.M_DOWN: sy = 1; break;
-      case this.M_LEFT: sy = 2; break;
-      case this.M_RIGHT: sy = 3; break;
-      case this.M_DEAD: sy = 4; break;
-      case this.M_JUMP_LEFT: sy = 5; break;
-      case this.M_JUMP_RIGHT: sy = 6; break;
-    }
-    this.sheet.draw(ctx, sx, sy * this.height, this.width, this.height, xOff + this.x, yOff + this.y - this.height);
+    const sy = this.currentMove * JumpingMonster.FH;
+    this.sheet.draw(ctx, sx, sy, this.width, JumpingMonster.FH, xOff + this.x, yOff + this.y - JumpingMonster.FH);
   }
 }

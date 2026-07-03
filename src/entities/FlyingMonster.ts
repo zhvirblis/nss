@@ -2,9 +2,17 @@ import { Monster } from './Monster';
 import { SpriteSheet } from '../rendering/SpriteSheet';
 
 export class FlyingMonster extends Monster {
-  private moveIndex = 0;
-  private moveFrameCounter = 0;
+  private moveCounter = 0;
+  private moveInterval: number;
   private sheet: SpriteSheet;
+
+  private static readonly FW = 22;
+  private static readonly FH = 22;
+  private static readonly OFFSETS: Record<number, [number, number]> = {
+    2: [0, -6],
+    3: [-6, -6],
+    4: [-3, -3],
+  };
 
   constructor(
     img: HTMLImageElement,
@@ -12,36 +20,47 @@ export class FlyingMonster extends Monster {
     tileY: number,
     dx: number,
     dy: number,
-    _moveParam: number,
+    moveParam: number,
     levelHeight: number
   ) {
     super(tileX, tileY, dx, dy, levelHeight);
-    this.dx = 0;
+    this.moveInterval = moveParam;
+    this.moveCounter = 0;
     this.sheet = new SpriteSheet(img);
   }
 
   move(): void {
     if (!this.dying && !this.dead) {
+      this.moveCounter++;
+      if (this.moveCounter >= this.moveInterval) {
+        this.moveCounter = 0;
+        if (this.x > this.origX) this.dx--;
+        else if (this.x < this.origX) this.dx++;
+        if (this.y > this.origY) this.dy--;
+        else if (this.y < this.origY) this.dy++;
+      }
+      this.x += this.dx;
+      this.y += this.dy;
+      if (this.dx > 0) this.currentMove = this.M_RIGHT;
+      else if (this.dx < 0) this.currentMove = this.M_LEFT;
       this.currentFrame++;
       if (this.currentFrame >= 2) this.currentFrame = 0;
-
-      this.moveFrameCounter++;
-      if (this.moveFrameCounter >= 5) {
-        this.moveFrameCounter = 0;
-        this.moveIndex++;
-        if (this.moveIndex >= 32) this.moveIndex = 0;
-      }
     } else if (this.dying) {
+      this.x += this.dx;
       this.y += this.dy;
-      this.dy += 1;
+      if (this.dy < 8) this.dy++;
       if (this.y > this.levelHeight) this.dead = true;
     }
   }
 
   render(ctx: CanvasRenderingContext2D, xOff: number, yOff: number): void {
     if (!this.active && !this.dying) return;
-    const sx = this.currentFrame * this.width;
-    const sy = this.currentMove * this.height;
-    this.sheet.draw(ctx, sx, sy, this.width, this.height, xOff + this.x, yOff + this.y - this.height);
+    const off = FlyingMonster.OFFSETS[this.currentMove] ?? [0, 0];
+    this.sheet.draw(ctx,
+      this.currentFrame * FlyingMonster.FW,
+      this.currentMove * FlyingMonster.FH,
+      FlyingMonster.FW, FlyingMonster.FH,
+      xOff + this.x + off[0],
+      yOff + this.y + off[1]);
   }
 }
