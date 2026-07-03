@@ -73,6 +73,25 @@ export class LineMonster extends Monster {
   }
 
   render(ctx: CanvasRenderingContext2D, xOff: number, yOff: number): void {
+    // Patrol path lines (matches Java: drawn even when inactive, only hidden when dying)
+    if (!this.dying) {
+      ctx.strokeStyle = '#404040';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      for (let i = 0; i < this.nodes.length; i++) {
+        const cx = xOff + this.nodes[i][0] + 8;
+        const cy = yOff + this.nodes[i][1] - 8;
+        if (i === 0) ctx.moveTo(cx, cy);
+        else ctx.lineTo(cx, cy);
+      }
+      // Close the loop back to first node
+      const cx0 = xOff + this.nodes[0][0] + 8;
+      const cy0 = yOff + this.nodes[0][1] - 8;
+      ctx.lineTo(cx0, cy0);
+      ctx.stroke();
+    }
+
+    // Monster sprite
     if (!this.active && !this.dying) return;
     const sx = this.currentFrame * this.width;
     const sy = this.currentMove * this.height;
