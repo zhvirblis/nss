@@ -21,8 +21,8 @@ export class TileRenderer {
         if (col >= tileRow.length) break;
         const tileId = tileRow[col];
         if (tileId <= 0 || tileId > 99) continue;
-        const sx = ((tileId - 1) % 10) * TILE_SIZE;
-        const sy = Math.floor((tileId - 1) / 10) * TILE_SIZE;
+        const sx = (tileId % 10) * TILE_SIZE;
+        const sy = Math.floor(tileId / 10) * TILE_SIZE;
         const dx = xOff + col * TILE_SIZE;
         const dy = yOff + row * TILE_SIZE;
         this.sheet.draw(ctx, sx, sy, TILE_SIZE, TILE_SIZE, dx, dy);

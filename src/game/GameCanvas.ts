@@ -349,31 +349,15 @@ export class GameCanvas {
     if (!this.player.dead) {
       const sx = this.player.angleOff * this.player.width;
       const sy = this.player.currentMove * (this.player.height + 8);
-      ctx.save();
-      ctx.beginPath();
-      ctx.rect(
-        this.camera.xOff + this.player.x,
-        this.camera.yOff + this.player.y - this.player.height,
-        this.player.width,
-        this.player.height + 8
-      );
-      ctx.clip();
       this.playerSheet.draw(ctx, sx, sy, this.player.width, this.player.height + 8,
-        this.camera.xOff + this.player.x - this.player.width * this.player.angleOff,
-        this.camera.yOff + this.player.y + (this.player.height + 8) * this.player.currentMove + 8);
-      ctx.restore();
+        this.camera.xOff + this.player.x,
+        this.camera.yOff + this.player.y - this.player.height);
 
-      // Invincibility overlay
       if (this.player.invincible) {
-        ctx.save();
-        ctx.beginPath();
-        ctx.rect(this.camera.xOff + this.player.x - 3, this.camera.yOff + this.player.y - this.player.height - 3, 22, 22);
-        ctx.clip();
         this.invincibilitySheet.draw(ctx,
           this.player.invincibilityFrame * 22, 0, 22, 22,
-          this.camera.xOff + this.player.x - 3 - this.player.invincibilityFrame * 22,
+          this.camera.xOff + this.player.x - 3,
           this.camera.yOff + this.player.y - this.player.height - 3);
-        ctx.restore();
       }
     }
 
