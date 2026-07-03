@@ -77,6 +77,7 @@ export class LineMonster extends Monster {
     if (!this.dying) {
       ctx.strokeStyle = '#404040';
       ctx.lineWidth = 1;
+      ctx.setLineDash([4, 2]);
       ctx.beginPath();
       for (let i = 0; i < this.nodes.length; i++) {
         const cx = xOff + this.nodes[i][0] + 8;
@@ -89,6 +90,7 @@ export class LineMonster extends Monster {
       const cy0 = yOff + this.nodes[0][1] - 8;
       ctx.lineTo(cx0, cy0);
       ctx.stroke();
+      ctx.setLineDash([]);
     }
 
     // Monster sprite
