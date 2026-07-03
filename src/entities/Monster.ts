@@ -58,12 +58,17 @@ export abstract class Monster {
     this.active = true;
   }
 
+  private top(): number {
+    return this.y - this.height;
+  }
+
   checkActive(xOff: number, yOff: number, screenW: number, screenH: number): void {
+    const cy = this.y - this.halfH;
     if (
       this.x < -xOff + screenW + 50 &&
       this.x > -xOff - 50 &&
-      this.y < -yOff + screenH + 50 &&
-      this.y > -yOff - 50
+      cy < -yOff + screenH + 50 &&
+      cy > -yOff - 50
     ) {
       this.active = true;
     } else {
@@ -76,8 +81,8 @@ export abstract class Monster {
       !this.dying &&
       this.x - 5 <= px &&
       this.x + this.width + 5 >= px &&
-      this.y - 5 <= py &&
-      this.y + this.height + 5 >= py
+      this.top() - 5 <= py &&
+      this.y + 5 >= py
     );
   }
 
@@ -85,14 +90,15 @@ export abstract class Monster {
     x1: number, x0: number, y1: number, y0: number
   ): boolean {
     if (this.dying) return false;
+    const t = this.top();
     const xHit =
       (x0 >= this.x && x0 <= this.x + this.width) ||
       (x1 >= this.x && x1 <= this.x + this.width) ||
       (x0 < this.x && x1 > this.x + this.width);
     const yHit =
-      (y0 >= this.y && y0 <= this.y + this.height) ||
-      (y1 >= this.y && y1 <= this.y + this.height) ||
-      (y0 < this.y && y1 > this.y + this.height);
+      (y0 >= t && y0 <= t + this.height) ||
+      (y1 >= t && y1 <= t + this.height) ||
+      (y0 < t && y1 > t + this.height);
     if (xHit && yHit) {
       this.dying = true;
       this.dy = -8;

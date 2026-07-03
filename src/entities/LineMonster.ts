@@ -20,14 +20,22 @@ export class LineMonster extends Monster {
     super(0, 0, dx, dy, levelHeight);
     this.x = startX;
     this.origX = startX;
-    this.y = startY;
-    this.origY = startY;
-    this.nodes = nodes;
+    this.y = startY + 16;
+    this.origY = startY + 16;
+    this.nodes = nodes.map(n => [n[0], n[1] + 16]);
     this.nextNode = 1;
     this.speed = speed;
     this.dx = speed;
     this.origDX = speed;
     this.sheet = new SpriteSheet(img);
+  }
+
+  reset(): void {
+    if (!this.dying && !this.dead) {
+      super.reset();
+      this.nextNode = 1;
+      this.dx = this.speed;
+    }
   }
 
   move(): void {
@@ -54,9 +62,12 @@ export class LineMonster extends Monster {
 
       if (diffX > 0) this.currentMove = this.M_RIGHT;
       else if (diffX < 0) this.currentMove = this.M_LEFT;
+      else if (diffY > 0) this.currentMove = this.M_DOWN;
+      else if (diffY < 0) this.currentMove = this.M_UP;
     } else if (this.dying) {
+      this.x += this.dx;
       this.y += this.dy;
-      this.dy += 1;
+      if (this.dy < 8) this.dy++;
       if (this.y > this.levelHeight) this.dead = true;
     }
   }
