@@ -191,6 +191,10 @@ export class GameCanvas {
     // Dying state
     if (this.player.dead) {
       this.dyingTimer++;
+      if ((this.player.jumping || this.player.falling) && this.player.dy < this.player.maxDY) {
+        this.player.dy += 256;
+      }
+      this.player.y += this.player.dy >> 8;
       if (this.player.y > this.tileMap.pixelsTall() + 50) {
         if (this.player.lives <= 0) {
           this.gameover = true;
